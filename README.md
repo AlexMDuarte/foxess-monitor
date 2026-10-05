@@ -6,8 +6,8 @@ O widget usa o logótipo FoxESS fornecido, pode ser arrastado pelo cabeçalho e 
 
 ## Utilizar
 
-1. Instale com `FoxESS-Monitor-Setup-x64.exe` ou execute `FoxESS Monitor.exe` em `outputs/FoxESS-Monitor`.
-2. O widget inicia em modo demonstração, sem fazer pedidos de rede. Use ⚙ para desativar a demo e configurar a chave API FoxESS. O botão “Testar ligação” verifica endpoint, chave e número de série antes de guardar.
+1. Instale com `dist/FoxESS-Monitor-Setup-x64.exe` ou execute `publish/FoxESS Monitor.exe` depois de compilar.
+2. O widget inicia em modo demonstração, sem fazer pedidos de rede. Use ⚙ para desativar a demo e configurar a chave API FoxESS e o número de série do teu inversor. O botão “Testar ligação” verifica endpoint, chave e número de série antes de guardar.
 3. Opcionalmente ative “Iniciar com o Windows” e “Manter widget sempre no topo”. O botão — oculta para o ícone junto ao relógio; clique duplo no ícone reabre.
 
 A chave é cifrada com DPAPI do Windows e guardada em `%APPDATA%\FoxESS Monitor\settings.json`, vinculada ao utilizador e ao PC. Não é enviada a um backend externo nem ao frontend/browser. `appsettings.example.json` é apenas referência e não deve conter uma chave real.
@@ -22,13 +22,13 @@ Endpoint padrão: `https://www.foxesscloud.com` (apenas domínio, sem `/op/...`)
 
 ## Compilar
 
-Requer Windows e .NET 8 SDK. Na pasta deste projeto:
+Requer Windows, .NET 8 SDK e Inno Setup para compilar o instalador. Na pasta deste projeto:
 
 ```powershell
-dotnet publish .\FoxESSMonitor.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o ..\..\outputs\FoxESS-Monitor
+dotnet publish .\FoxESSMonitor.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o .\publish
 ```
 
-Para recriar o instalador, instale Inno Setup e compile `FoxESSMonitor.iss`. A distribuição publicada é autónoma e não requer .NET previamente instalado. O script `Assets/Generate-Icons.ps1` regenera PNG e ICO a partir do SVG, se necessário.
+Para recriar o instalador, compile `FoxESSMonitor.iss` com Inno Setup depois de publicar. O instalador fica em `dist/`. A distribuição publicada é autónoma e não requer .NET previamente instalado. O script `Assets/Generate-Icons.ps1` regenera PNG e ICO a partir do SVG, se necessário.
 
 ## Privacidade e limitações
 

@@ -13,5 +13,7 @@ appsettings.local.json
 
 # Local publish/install artifacts
 outputs/
+publish/
+dist/
 FoxESS-Monitor-Setup-*.exe
 *.pdb

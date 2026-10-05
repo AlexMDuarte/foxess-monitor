@@ -9,8 +9,8 @@ AppPublisher=FoxESS Monitor
 DefaultDirName={localappdata}\Programs\FoxESS Monitor
 DefaultGroupName=FoxESS Monitor
 PrivilegesRequired=lowest
-OutputDir=..\..\outputs
-OutputBaseFilename=FoxESS-Monitor-Setup-1.1.5-x64
+OutputDir=dist
+OutputBaseFilename=FoxESS-Monitor-Setup-x64
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern
@@ -18,7 +18,7 @@ SetupIconFile=Assets\foxess.ico
 ArchitecturesInstallIn64BitMode=x64compatible
 UninstallDisplayIcon={app}\{#MyAppExeName}
 [Files]
-Source: "..\..\outputs\FoxESS-Monitor\FoxESS Monitor.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "publish\FoxESS Monitor.exe"; DestDir: "{app}"; Flags: ignoreversion
 [Icons]
 Name: "{group}\FoxESS Monitor"; Filename: "{app}\{#MyAppExeName}"
 Name: "{autodesktop}\FoxESS Monitor"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
