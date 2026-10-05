@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType><TargetFramework>net8.0-windows</TargetFramework><UseWPF>true</UseWPF><UseWindowsForms>true</UseWindowsForms><EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings><AssemblyName>FoxESS Monitor</AssemblyName><RootNamespace>FoxESSMonitor</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\foxess.ico</ApplicationIcon>
+    <Version>1.1.5</Version><AssemblyVersion>1.1.5.0</AssemblyVersion><FileVersion>1.1.5.0</FileVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Assets\foxess.png;Assets\foxess.ico" />
+    <Resource Include="Assets\foxess.png;Assets\foxess.ico" />
+  </ItemGroup>
+</Project>

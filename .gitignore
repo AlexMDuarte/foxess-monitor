@@ -1,0 +1,17 @@
+# Build outputs
+**/bin/
+**/obj/
+.vs/
+TestResults/
+
+# Local settings and credentials
+settings.json
+appsettings.local.json
+.env
+.env.*
+*.log
+
+# Local publish/install artifacts
+outputs/
+FoxESS-Monitor-Setup-*.exe
+*.pdb
