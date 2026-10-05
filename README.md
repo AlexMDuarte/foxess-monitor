@@ -1,39 +1,138 @@
 # FoxESS Monitor
 
-Widget Windows x64 para FoxESS H1-3.7-E-G2.
+Widget moderno de desktop (Windows x64) para monitorização em tempo real de inversores solares FoxESS (com suporte nativo a inversores híbridos da série H1, baterias de armazenamento e inversores de rede).
 
-O widget usa o logótipo FoxESS fornecido, pode ser arrastado pelo cabeçalho e redimensionado pelas bordas. O painel adapta a largura à janela e distribui a área de dados pela altura disponível. Arraste a área do cabeçalho (fora dos botões) para mover. O ícone aparece na janela, na área de notificação, no executável e nos atalhos/instalador. Os ficheiros de marca estão em `Assets/`.
+O widget apresenta uma interface escura translúcida, pode ser arrastado pelo cabeçalho e redimensionado pelas bordas. O painel adapta a largura e distribui a área de dados responsivamente. Inclui integração completa com a área de notificação do Windows (System Tray), controlos de janela e persistência de posicionamento.
 
-## Utilizar
+---
 
-1. Instale com `dist/FoxESS-Monitor-Setup-x64.exe` ou execute `publish/FoxESS Monitor.exe` depois de compilar.
-2. O widget inicia em modo demonstração, sem fazer pedidos de rede. Use ⚙ para desativar a demo e configurar a chave API FoxESS e o número de série do teu inversor. O botão “Testar ligação” verifica endpoint, chave e número de série antes de guardar.
-3. Opcionalmente ative “Iniciar com o Windows” e “Manter widget sempre no topo”. O botão — oculta para o ícone junto ao relógio; clique duplo no ícone reabre.
+## Novidades da Versão 1.2.0
 
-A chave é cifrada com DPAPI do Windows e guardada em `%APPDATA%\FoxESS Monitor\settings.json`, vinculada ao utilizador e ao PC. Não é enviada a um backend externo nem ao frontend/browser. `appsettings.example.json` é apenas referência e não deve conter uma chave real.
+- 🔋 **Suporte Completo a Baterias Híbridas**:
+  - Deteção e cálculo em tempo real da potência de carga e descarga da bateria (`batChargePower`, `batDischargePower`, `batPower`).
+  - Apresentação do estado de atividade da bateria: *"A carregar X.XX kW"*, *"A descarregar X.XX kW"*, *"Bateria cheia"* ou *"Em repouso"*.
+  - **Barra Visual de SoC**: Indicador gráfico dinâmico com escala de cores (Verde ≥50%, Âmbar 20–49%, Vermelho <20%).
 
-O diagnóstico e os erros são registados em `%APPDATA%\FoxESS Monitor\FoxESS Monitor.log`. O ficheiro não inclui a API key.
+- ⚡ **Balanço Energético e Autossuficiência Doméstica**:
+  - **Cálculo Físico Exato do Consumo**: A fórmula de consumo doméstico agora compensa o fluxo de carga/descarga da bateria (`Consumo = PV + Importação - Exportação + Descarga - Carga`), garantindo valores fidedignos mesmo durante carregamento solar intensivo.
+  - **Emblema de Autossuficiência**: Apresentação visual da taxa de cobertura solar do consumo da casa (ex.: `☀️ 100% Solar` ou `⚡ 65% Solar`).
 
-## Dados
+- 🪟 **Gestão de Janela e Persistência**:
+  - O widget memoriza e restaura a sua posição e tamanho no ecrã entre reinicializações, com validação de limites de ecrãs/monitores múltiplos.
+  - Adicionado botão **Fechar (`✕`)** no cabeçalho, com comportamento configurável (fechar aplicação ou minimizar para o tabuleiro).
 
-O widget consulta a FoxESS Open API V1 e mostra PV total/PV1/PV2, carga, importação/exportação, SoC, produção diária, estado, temperatura quando publicada pela API e hora de leitura. Campos indisponíveis no equipamento aparecem como “—”. O consumo da casa é estimado a partir de PV e potência líquida da rede quando a variável de carga falta.
+- ⌨️ **Atalhos de Teclado**:
+  - `F5`: Atualizar dados imediatamente.
+  - `Esc`: Minimizar para o tabuleiro do sistema.
+  - `Ctrl+,` ou `Ctrl+S`: Abrir janela de definições.
+  - `Ctrl+Q`: Encerrar o FoxESS Monitor.
 
-Endpoint padrão: `https://www.foxesscloud.com` (apenas domínio, sem `/op/...`). O endereço `developer-eu.foxesscloud.com` é o portal de programadores, não o endpoint da API. Atualização padrão: 5 minutos. Cada ciclo usa até três chamadas: leitura V1, produção diária e detalhe do dispositivo. A documentação FoxESS indica limite de 1.440 chamadas por inversor/dia e máximo de uma chamada por segundo por interface; o widget mantém pelo menos cinco minutos entre atualizações. Erros de rede/API/rate limit são apresentados no widget e podem ser repetidos pelo botão ↻.
+- 🔔 **Melhorias no Tabuleiro do Sistema (System Tray)**:
+  - **Tooltip Dinâmico**: Ao passar o rato pelo ícone junto ao relógio, vê imediatamente o resumo: `FoxESS: 3.42kW | Bat: 78% | Casa: 1.26kW`.
+  - **Menu de Contexto Rápido**: Opções para alternar diretamente o *Modo Demonstração* e *Sempre no Topo* com um clique.
 
-## Compilar
+- ⚙️ **Ecrã de Definições Modernizado (Dark UI)**:
+  - Interface escura consistente com o widget.
+  - Botão de alternância de visibilidade da chave API (`👁` / `🙈`) para conferência e colagem segura.
+  - Indicação do estado da credencial (*"✓ Chave guardada e protegida com DPAPI"*).
+  - Novas opções: Lembrar posição da janela e comportamento do botão fechar.
 
-Requer Windows, .NET 8 SDK e Inno Setup para compilar o instalador. Na pasta deste projeto:
+- 🛡️ **Robustez de Rede e Diagnóstico**:
+  - Tradução amigável dos códigos de erro da API FoxESS (`errno` 40256, 40257, 41807, 41808, 41809, 41810) para português claro.
+  - Tratamento gracioso de perdas de ligação e tempos limite (*timeouts*).
+  - Rotação de segurança do ficheiro de registo local (`%APPDATA%\FoxESS Monitor\FoxESS Monitor.log`) com limite de 5 MB.
 
+- 🚀 **Modo Demonstração Realista**:
+  - Simulação dinâmica baseada na hora do dia e curvas solares reais, permitindo explorar todas as funcionalidades sem necessidade de credenciais ou hardware ativo.
+
+---
+
+## Como Utilizar
+
+1. **Instalação**:
+   - Execute o instalador `dist/FoxESS-Monitor-Setup-x64.exe` ou execute diretamente a versão autónoma em `publish/FoxESS Monitor.exe`.
+2. **Primeira Execução**:
+   - O widget inicia por padrão em **Modo Demonstração** (sem chamadas de rede).
+   - Clique em **⚙** (ou prima `Ctrl+,`) para abrir as Definições.
+   - Desmarque a opção "Usar modo demonstração".
+   - Introduza o seu **Número de Série do Inversor** e a sua **Chave API FoxESS**.
+   - Clique em **Testar ligação** para verificar o endpoint, chave e número de série antes de guardar.
+3. **Controlos e Minimização**:
+   - **Mover**: Clique e arraste na área vazia do cabeçalho.
+   - **Minimizar**: Clique em **—** ou prima `Esc` para recolher para a área de notificação junto ao relógio.
+   - **Reabrir**: Clique duas vezes no ícone da raposa no tabuleiro do sistema ou clique com o botão direito e selecione "Abrir Widget".
+   - **Fechar**: Clique em **✕** ou prima `Ctrl+Q`.
+
+---
+
+## Dados e Variáveis Monitorizadas
+
+O FoxESS Monitor comunica com a **FoxESS Open API V1** e apresenta:
+
+| Métrica | Descrição |
+| :--- | :--- |
+| **Produção Solar** | Potência total gerada pelos painéis fotovoltaicos em tempo real (kW). |
+| **Strings PV1 / PV2** | Potência individual de cada entrada/string solar do inversor. |
+| **Consumo da Casa** | Potência consumida pela habitação (kW), medida diretamente ou calculada pelo balanço de potências. |
+| **Rede Elétrica** | Indicação e potência de exportação (verde) ou importação (âmbar) da rede pública. |
+| **Bateria (SoC)** | Percentagem de carga da bateria (%), fluxo de carga/descarga (kW) e barra gráfica colorida. |
+| **Produção Hoje / Mês** | Total de energia gerada no dia de hoje (kWh) e total acumulado no mês corrente. |
+| **Estado do Inversor** | Indicador luminoso e texto (*Online*, *Falha*, *Offline*). |
+| **Temperatura & Hora** | Temperatura de funcionamento do inversor (°C) e hora da última sincronização. |
+
+> [!NOTE]
+> **Políticas de Pedidos FoxESS**:
+> O endpoint padrão é `https://www.foxesscloud.com` (apenas o domínio base). O portal de programadores (`developer-eu.foxesscloud.com`) é apenas a página Web onde obtém a sua chave e é automaticamente normalizado se for colado.
+> A FoxESS Cloud estipula um limite de 1.440 chamadas por inversor/dia; o widget aplica um intervalo mínimo de 5 minutos entre atualizações automáticas para garantir conformidade e evitar bloqueios.
+
+---
+
+## Segurança e Privacidade
+
+- **Cifragem Local DPAPI**: A sua chave API é cifrada com a API de Proteção de Dados do Windows (`CryptProtectData`) antes de ser guardada em `%APPDATA%\FoxESS Monitor\settings.json`. A chave fica vinculada exclusivamente à sua conta de utilizador neste computador.
+- **Sem Servidores Intermédios**: O programa comunica diretamente e exclusivamente via HTTPS com a API oficial da FoxESS Cloud. Nenhuma informação ou métrica é enviada para terceiros.
+- **Registo Local Seguro**: O ficheiro de diagnóstico `%APPDATA%\FoxESS Monitor\FoxESS Monitor.log` omite chaves de autenticação e credenciais, e possui rotação automática com limite de 5 MB.
+
+---
+
+## Compilação e Empacotamento
+
+### Pré-requisitos
+- Windows 10/11 x64
+- .NET 8 SDK
+- Inno Setup 6 (opcional, para gerar o instalador `Setup.exe`)
+
+### Compilar com o Script Automatizado
+O script `build.ps1` localiza o SDK .NET e compila a aplicação autónoma:
+
+```powershell
+# Compilar executável autónomo (publish/FoxESS Monitor.exe)
+.\build.ps1
+
+# Compilar executável e gerar instalador Inno Setup (dist/FoxESS-Monitor-Setup-x64.exe)
+.\build.ps1 -BuildInstaller
+```
+
+### Compilação Manual via .NET CLI
 ```powershell
 dotnet publish .\FoxESSMonitor.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o .\publish
 ```
 
-Para recriar o instalador, compile `FoxESSMonitor.iss` com Inno Setup depois de publicar. O instalador fica em `dist/`. A distribuição publicada é autónoma e não requer .NET previamente instalado. O script `Assets/Generate-Icons.ps1` regenera PNG e ICO a partir do SVG, se necessário.
+---
 
-## Privacidade e limitações
+## Histórico de Alterações (Changelog)
 
-- API key local, cifrada por DPAPI. A aplicação só comunica com o endpoint HTTPS configurado.
-- A FoxESS Cloud não fornece atualização instantânea; cinco minutos é o intervalo predefinido.
-- A disponibilidade e os nomes de variáveis dependem do modelo/firmware/conta. A temperatura e a SoC podem não estar disponíveis.
-- “Atualizar agora” envia pedidos imediatamente e deve ser usado com moderação para respeitar limites da FoxESS.
-- Atualização automática aqui significa atualização dos dados. O programa não se autoatualiza; instale uma nova versão manualmente quando fornecida.
+### Versão 1.2.0
+- **Suporte a Baterias Híbridas**: Deteção de potência de carga/descarga, estado operacional e barra visual de SoC com cores dinâmicas.
+- **Cálculo de Autossuficiência**: Indicador em tempo real da percentagem de consumo suprido por energia solar/bateria.
+- **Fórmula de Consumo Aprimorada**: Compensação do carregamento e descarregamento da bateria na estimativa da carga doméstica.
+- **Persistência de Janela**: Memorização de coordenadas e dimensões do widget no ecrã.
+- **Controlos e Atalhos**: Adicionado botão Fechar (`✕`), atalhos `F5`, `Esc`, `Ctrl+,` e `Ctrl+Q`.
+- **System Tray Dinâmico**: Resumo das métricas no tooltip do ícone e atalhos rápidos no menu de contexto.
+- **Definições com Dark Mode**: Interface escura renovada, botão de visibilidade da chave API (`👁`) e novas opções.
+- **Tradução de Erros da API**: Mensagens em português para códigos de erro da FoxESS Cloud e problemas de rede.
+- **Gestão de Logs**: Rotação automática de ficheiro de log limitada a 5 MB.
+- **Script de Compilação Aprimorado**: Suporte a deteção automática de SDK e parâmetro `-BuildInstaller`.
+
+### Versão 1.1.5
+- Versão inicial com suporte a FoxESS H1-3.7-E-G2, Modo Demonstração e cifragem DPAPI.

@@ -1,21 +1,233 @@
-<Window x:Class="FoxESSMonitor.SettingsWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Configuração FoxESS Monitor" Width="410" Height="590" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Background="#111927" Foreground="#F7FAFF">
- <Window.Resources>
-  <Style x:Key="ConfigInput" TargetType="Control"><Setter Property="Foreground" Value="#182333"/><Setter Property="Background" Value="#F4F7FB"/><Setter Property="BorderBrush" Value="#A8B5C5"/><Setter Property="BorderThickness" Value="1"/><Setter Property="Padding" Value="9"/><Setter Property="FontSize" Value="13"/><Setter Property="Height" Value="38"/></Style>
-  <Style x:Key="ConfigCheck" TargetType="CheckBox"><Setter Property="Foreground" Value="#F7FAFF"/><Setter Property="FontSize" Value="12"/><Setter Property="Margin" Value="0,5,0,5"/><Setter Property="Cursor" Value="Hand"/></Style>
- </Window.Resources>
- <Grid Margin="22"><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-  <StackPanel><TextBlock Text="Configuração" FontSize="23" FontWeight="SemiBold"/><TextBlock Text="A chave fica cifrada neste utilizador Windows." Foreground="#B9C7D8" FontSize="11" Margin="0,5,0,15"/></StackPanel>
-  <StackPanel Grid.Row="1">
-   <TextBlock Text="Endpoint FoxESS"/><TextBox x:Name="EndpointBox" Style="{StaticResource ConfigInput}" Margin="0,5,0,3"/>
-   <TextBlock Text="Base da API: https://www.foxesscloud.com. Pode colar o URL completo; o caminho será removido automaticamente." Foreground="#B9C7D8" FontSize="10" TextWrapping="Wrap" Margin="0,0,0,11"/>
-   <TextBlock Text="Número de série"/><TextBox x:Name="SerialBox" Style="{StaticResource ConfigInput}" Margin="0,5,0,11"/>
-   <TextBlock Text="API key (fica apenas neste PC)"/><PasswordBox x:Name="KeyBox" Style="{StaticResource ConfigInput}" Margin="0,5,0,11"/>
-   <TextBlock Text="Atualizar a cada (minutos, mínimo 5)"/><TextBox x:Name="IntervalBox" Style="{StaticResource ConfigInput}" Margin="0,5,0,9"/>
-   <CheckBox x:Name="DemoBox" Content="Usar modo demonstração" Style="{StaticResource ConfigCheck}"/>
-   <CheckBox x:Name="TopBox" Content="Manter widget sempre no topo" Style="{StaticResource ConfigCheck}"/>
-   <CheckBox x:Name="StartupBox" Content="Iniciar com o Windows" Style="{StaticResource ConfigCheck}"/>
-   <TextBlock Text="A demo não usa a rede. O teste de ligação faz uma chamada à FoxESS. Registo local (sem API key): %APPDATA%\FoxESS Monitor\FoxESS Monitor.log" TextWrapping="Wrap" Foreground="#B9C7D8" FontSize="10" Margin="0,5,0,0"/>
-  </StackPanel>
-  <Grid Grid.Row="2" Margin="0,12,0,0"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><Button Content="Testar ligação" Click="TestClick" Padding="12,8" HorizontalAlignment="Left" Background="#26374B" Foreground="#F7FAFF" BorderBrush="#51647B"/><StackPanel Grid.Column="1" Orientation="Horizontal"><Button Content="Cancelar" IsCancel="True" Padding="14,8" Margin="0,0,8,0"/><Button Content="Guardar" IsDefault="True" Click="SaveClick" Padding="17,8" Background="#62E6B2" Foreground="#10201C" BorderThickness="0"/></StackPanel></Grid>
- </Grid>
+<Window x:Class="FoxESSMonitor.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Definições — FoxESS Monitor"
+        Width="440" Height="660"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="#111927"
+        Foreground="#F7FAFF"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="InputBg" Color="#182436"/>
+        <SolidColorBrush x:Key="InputBorder" Color="#2E415B"/>
+        <SolidColorBrush x:Key="InputFocusBorder" Color="#62E6B2"/>
+        <SolidColorBrush x:Key="TextMuted" Color="#9BAAC0"/>
+        <SolidColorBrush x:Key="AccentGreen" Color="#62E6B2"/>
+
+        <Style x:Key="ConfigInput" TargetType="TextBox">
+            <Setter Property="Foreground" Value="#F7FAFF"/>
+            <Setter Property="Background" Value="{StaticResource InputBg}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource InputBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="0" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource InputFocusBorder}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ConfigPassword" TargetType="PasswordBox">
+            <Setter Property="Foreground" Value="#F7FAFF"/>
+            <Setter Property="Background" Value="{StaticResource InputBg}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource InputBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="0" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource InputFocusBorder}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ConfigCheck" TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#F7FAFF"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,4,0,4"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <Style x:Key="SmallBtn" TargetType="Button">
+            <Setter Property="Background" Value="#253549"/>
+            <Setter Property="Foreground" Value="#C5D1E0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="b" Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="b" Property="Background" Value="#324761"/>
+                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Margin="0,0,0,16">
+            <TextBlock Text="Definições da Aplicação" FontSize="20" FontWeight="SemiBold"/>
+            <TextBlock Text="A chave API é cifrada localmente com DPAPI vinculada a este utilizador Windows."
+                       Foreground="{StaticResource TextMuted}" FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap"/>
+        </StackPanel>
+
+        <!-- Form fields in ScrollViewer -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="0,0,10,0">
+                <!-- Endpoint -->
+                <TextBlock Text="Endpoint da API FoxESS" FontWeight="Medium" FontSize="12"/>
+                <TextBox x:Name="EndpointBox" Style="{StaticResource ConfigInput}" Margin="0,5,0,3"/>
+                <TextBlock Text="Predefinição: https://www.foxesscloud.com (apenas o domínio; o caminho /op/... é tratado automaticamente)."
+                           Foreground="{StaticResource TextMuted}" FontSize="10" TextWrapping="Wrap" Margin="0,0,0,12"/>
+
+                <!-- Inverter Serial Number -->
+                <TextBlock Text="Número de Série do Inversor (SN)" FontWeight="Medium" FontSize="12"/>
+                <TextBox x:Name="SerialBox" Style="{StaticResource ConfigInput}" Margin="0,5,0,3"/>
+                <TextBlock Text="Exemplo: H1-3.7-E ou código impresso na etiqueta do equipamento."
+                           Foreground="{StaticResource TextMuted}" FontSize="10" TextWrapping="Wrap" Margin="0,0,0,12"/>
+
+                <!-- API Key -->
+                <TextBlock Text="Chave API FoxESS" FontWeight="Medium" FontSize="12"/>
+                <Grid Margin="0,5,0,3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <PasswordBox x:Name="KeyBox" Style="{StaticResource ConfigPassword}"/>
+                    <TextBox x:Name="KeyVisibleBox" Style="{StaticResource ConfigInput}" Visibility="Collapsed"/>
+                    <Button x:Name="ToggleKeyBtn" Grid.Column="1" Width="38" Height="38" Margin="6,0,0,0"
+                            Content="👁" ToolTip="Mostrar / Ocultar chave" Style="{StaticResource SmallBtn}" Click="ToggleKeyVisibility_Click"/>
+                </Grid>
+                <TextBlock x:Name="KeyStatusLabel" Text="✓ Nenhuma chave configurada."
+                           Foreground="{StaticResource TextMuted}" FontSize="10" TextWrapping="Wrap" Margin="0,0,0,12"/>
+
+                <!-- Refresh Interval -->
+                <TextBlock Text="Intervalo de Atualização (minutos)" FontWeight="Medium" FontSize="12"/>
+                <TextBox x:Name="IntervalBox" Style="{StaticResource ConfigInput}" Margin="0,5,0,3"/>
+                <TextBlock Text="Mínimo de 5 minutos (FoxESS impõe limite de 1.440 pedidos/dia por inversor)."
+                           Foreground="{StaticResource TextMuted}" FontSize="10" TextWrapping="Wrap" Margin="0,0,0,14"/>
+
+                <!-- Checkboxes -->
+                <CheckBox x:Name="DemoBox" Content="Usar modo demonstração (sem chamadas de rede)" Style="{StaticResource ConfigCheck}"/>
+                <CheckBox x:Name="TopBox" Content="Manter widget sempre no topo" Style="{StaticResource ConfigCheck}"/>
+                <CheckBox x:Name="StartupBox" Content="Iniciar automaticamente com o Windows" Style="{StaticResource ConfigCheck}"/>
+                <CheckBox x:Name="PosBox" Content="Lembrar posição e tamanho da janela" Style="{StaticResource ConfigCheck}"/>
+                <CheckBox x:Name="CloseToTrayBox" Content="Botão fechar (✕) minimiza para o tabuleiro" Style="{StaticResource ConfigCheck}"/>
+
+                <!-- Log Note -->
+                <Border Background="#162232" CornerRadius="8" Padding="10,8" Margin="0,12,0,0">
+                    <TextBlock Text="Ficheiro de diagnóstico (sem API key): %APPDATA%\FoxESS Monitor\FoxESS Monitor.log"
+                               Foreground="{StaticResource TextMuted}" FontSize="10" TextWrapping="Wrap"/>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer Buttons -->
+        <Grid Grid.Row="2" Margin="0,16,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="TestBtn" Content="Testar ligação" Click="TestClick"
+                    Padding="14,9" Background="#26374B" Foreground="#F7FAFF" BorderThickness="0"
+                    Cursor="Hand">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="tb" Background="{TemplateBinding Background}" CornerRadius="8" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="tb" Property="Background" Value="#324964"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <Button Grid.Column="2" Content="Cancelar" IsCancel="True"
+                    Padding="14,9" Margin="0,0,8,0" Background="#26374B" Foreground="#F7FAFF" BorderThickness="0"
+                    Cursor="Hand">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="cb" Background="{TemplateBinding Background}" CornerRadius="8" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="cb" Property="Background" Value="#324964"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <Button Grid.Column="3" Content="Guardar" IsDefault="True" Click="SaveClick"
+                    Padding="18,9" Background="{StaticResource AccentGreen}" Foreground="#0D201A" FontWeight="SemiBold" BorderThickness="0"
+                    Cursor="Hand">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="sb" Background="{TemplateBinding Background}" CornerRadius="8" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="sb" Property="Background" Value="#7EF0C3"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </Grid>
+    </Grid>
 </Window>

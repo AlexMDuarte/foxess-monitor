@@ -1,18 +1,276 @@
-<Window x:Class="FoxESSMonitor.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework" Title="FoxESS Monitor" Width="374" Height="592" MinWidth="280" MinHeight="430" WindowStyle="None" ResizeMode="CanResize" AllowsTransparency="True" Background="Transparent" Topmost="True" ShowInTaskbar="False" Icon="/Assets/foxess.ico" UseLayoutRounding="True" SnapsToDevicePixels="True">
- <shell:WindowChrome.WindowChrome><shell:WindowChrome CaptionHeight="0" ResizeBorderThickness="7" CornerRadius="16" GlassFrameThickness="0" UseAeroCaptionButtons="False"/></shell:WindowChrome.WindowChrome>
- <Border CornerRadius="16" BorderBrush="#55FFFFFF" BorderThickness="1" Background="#111927" Padding="18" SnapsToDevicePixels="True" ClipToBounds="True">
-  <Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-   <Grid Background="Transparent" Cursor="SizeAll" ToolTip="Arraste o cabeçalho para mover" PreviewMouseLeftButtonDown="HeaderDrag"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel Orientation="Horizontal"><Border Width="31" Height="31" CornerRadius="10" Background="#263D70" Margin="0,0,9,0" Padding="5"><Image Source="/Assets/foxess.png" Stretch="Uniform"/></Border><StackPanel VerticalAlignment="Center"><TextBlock Text="FoxESS Monitor" Foreground="{StaticResource Ink}" FontSize="15" FontWeight="SemiBold"/><TextBlock Text="H1-3.7-E-G2" Foreground="{StaticResource Muted}" FontSize="9"/></StackPanel></StackPanel><Button Grid.Column="1" Content="⚙" Click="SettingsClick" ToolTip="Configuração" Style="{DynamicResource HeaderButton}"/><Button Grid.Column="2" Content="—" Click="MinimizeClick" Style="{DynamicResource HeaderButton}"/></Grid>
-   <Border Grid.Row="1" Background="#192633" CornerRadius="17" Padding="17" Margin="0,19,0,0"><Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="PRODUÇÃO SOLAR" Foreground="#9BAAC0" FontSize="10" FontWeight="SemiBold"/><StackPanel Orientation="Horizontal" Margin="0,5,0,0"><TextBlock x:Name="PvValue" Text="3.42" FontSize="37" FontWeight="Light" Foreground="White"/><TextBlock Text=" kW" VerticalAlignment="Bottom" Margin="3,0,0,7" FontSize="16" Foreground="#62E6B2"/></StackPanel><TextBlock x:Name="DemoLabel" Text="MODO DEMONSTRAÇÃO" Foreground="#F4C66A" FontSize="9" FontWeight="SemiBold" Margin="0,4,0,0"/></StackPanel><Border Grid.Column="1" Width="43" Height="43" CornerRadius="14" Background="#203B36" VerticalAlignment="Center"><TextBlock Text="↗" Foreground="#62E6B2" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border></Grid></Border>
-   <Grid Grid.Row="2" Margin="0,12,0,0"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="8"/><ColumnDefinition/></Grid.ColumnDefinitions><Border Background="#182330" CornerRadius="13" Padding="12"><StackPanel><TextBlock Text="PV1" Foreground="{StaticResource Muted}" FontSize="10"/><TextBlock x:Name="Pv1Value" Text="1.71 kW" Foreground="White" FontSize="17" FontWeight="SemiBold" Margin="0,4,0,0"/></StackPanel></Border><Border Grid.Column="2" Background="#182330" CornerRadius="13" Padding="12"><StackPanel><TextBlock Text="PV2" Foreground="{StaticResource Muted}" FontSize="10"/><TextBlock x:Name="Pv2Value" Text="1.71 kW" Foreground="White" FontSize="17" FontWeight="SemiBold" Margin="0,4,0,0"/></StackPanel></Border></Grid>
-   <Grid Grid.Row="3" Margin="0,13,0,0"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Grid.RowDefinitions><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
-    <TextBlock Text="🏠  Casa" Foreground="{StaticResource Muted}" VerticalAlignment="Center"/><TextBlock x:Name="LoadValue" Grid.Column="1" Text="1.26 kW" Foreground="White" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-    <TextBlock Grid.Row="1" Text="⚡  Rede" Foreground="{StaticResource Muted}" VerticalAlignment="Center"/><TextBlock x:Name="GridValue" Grid.Row="1" Grid.Column="1" Text="Exportação 2.16 kW" Foreground="#62E6B2" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-    <TextBlock Grid.Row="2" Text="🔋  Bateria" Foreground="{StaticResource Muted}" VerticalAlignment="Center"/><TextBlock x:Name="SocValue" Grid.Row="2" Grid.Column="1" Text="78%" Foreground="White" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-    <TextBlock Grid.Row="3" Text="📈  Hoje" Foreground="{StaticResource Muted}" VerticalAlignment="Center"/><TextBlock x:Name="TodayValue" Grid.Row="3" Grid.Column="1" Text="18.7 kWh" Foreground="White" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-   </Grid>
-   <Border Grid.Row="4" Background="#182330" CornerRadius="13" Padding="12" Margin="0,7,0,0"><Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><StackPanel Orientation="Horizontal"><Ellipse x:Name="StatusDot" Width="7" Height="7" Fill="#62E6B2" Margin="0,0,7,0"/><TextBlock x:Name="StatusValue" Text="Inversor online" Foreground="White" FontSize="11" FontWeight="SemiBold"/></StackPanel><TextBlock x:Name="MetaValue" Text="🌡 31°C   ·   Atualizado agora" Foreground="{StaticResource Muted}" FontSize="9" Margin="14,5,0,0"/><TextBlock x:Name="ErrorValue" Text="" Foreground="#FFAA8A" FontSize="9" Margin="0,4,0,0" TextWrapping="Wrap"/></StackPanel><Button Grid.Column="1" Content="↻" Click="RefreshClick" ToolTip="Atualizar agora" Style="{DynamicResource HeaderButton}"/></Grid></Border>
-  </Grid>
- </Border>
- <Window.Resources><Style x:Key="HeaderButton" TargetType="Button"><Setter Property="Foreground" Value="#C5D1E0"/><Setter Property="Background" Value="#202C3C"/><Setter Property="BorderThickness" Value="0"/><Setter Property="Width" Value="31"/><Setter Property="Height" Value="31"/><Setter Property="FontSize" Value="14"/><Setter Property="Cursor" Value="Hand"/><Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button"><Border Background="{TemplateBinding Background}" CornerRadius="10"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/></Border></ControlTemplate></Setter.Value></Setter></Style></Window.Resources>
+<Window x:Class="FoxESSMonitor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        Title="FoxESS Monitor"
+        Width="380" Height="620"
+        MinWidth="300" MinHeight="460"
+        WindowStyle="None"
+        ResizeMode="CanResizeWithGrip"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        ShowInTaskbar="False"
+        Icon="/Assets/foxess.ico"
+        UseLayoutRounding="True"
+        SnapsToDevicePixels="True"
+        PreviewKeyDown="Window_PreviewKeyDown">
+
+    <shell:WindowChrome.WindowChrome>
+        <shell:WindowChrome CaptionHeight="0"
+                            ResizeBorderThickness="7"
+                            CornerRadius="16"
+                            GlassFrameThickness="0"
+                            UseAeroCaptionButtons="False" />
+    </shell:WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="WidgetBg" Color="#111927" />
+        <SolidColorBrush x:Key="CardBg" Color="#182330" />
+        <SolidColorBrush x:Key="HeroBg" Color="#192633" />
+        <SolidColorBrush x:Key="BorderColor" Color="#2A3B52" />
+        <SolidColorBrush x:Key="TextPrimary" Color="#F7FAFF" />
+        <SolidColorBrush x:Key="TextMuted" Color="#9BAAC0" />
+        <SolidColorBrush x:Key="SolarGreen" Color="#62E6B2" />
+        <SolidColorBrush x:Key="GridOrange" Color="#F59E0B" />
+        <SolidColorBrush x:Key="BatteryCyan" Color="#38BDF8" />
+
+        <Style x:Key="HeaderButton" TargetType="Button">
+            <Setter Property="Foreground" Value="#C5D1E0"/>
+            <Setter Property="Background" Value="#202C3C"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="4,0,0,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="btnBorder" Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="btnBorder" Property="Background" Value="#2D3E54"/>
+                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="btnBorder" Property="Background" Value="#172230"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CloseButton" TargetType="Button" BasedOn="{StaticResource HeaderButton}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="btnBorder" Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="btnBorder" Property="Background" Value="#E53E3E"/>
+                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="btnBorder" Property="Background" Value="#9B2C2C"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border CornerRadius="16"
+            BorderBrush="{StaticResource BorderColor}"
+            BorderThickness="1"
+            Background="{StaticResource WidgetBg}"
+            Padding="18"
+            SnapsToDevicePixels="True"
+            ClipToBounds="True">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- 1. HEADER -->
+            <Grid Background="Transparent"
+                  Cursor="SizeAll"
+                  ToolTip="Arraste para mover o widget"
+                  PreviewMouseLeftButtonDown="HeaderDrag">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="32" Height="32" CornerRadius="10" Background="#263D70" Margin="0,0,10,0" Padding="5">
+                        <Image Source="/Assets/foxess.png" Stretch="Uniform"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="FoxESS Monitor" Foreground="{StaticResource TextPrimary}" FontSize="15" FontWeight="SemiBold"/>
+                        <TextBlock x:Name="DeviceSubtitle" Text="H1-3.7-E-G2" Foreground="{StaticResource TextMuted}" FontSize="9"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <Button Grid.Column="1" Content="⚙" Click="SettingsClick" ToolTip="Definições (Ctrl+,)" Style="{StaticResource HeaderButton}"/>
+                <Button Grid.Column="2" Content="—" Click="MinimizeClick" ToolTip="Minimizar para o tabuleiro (Esc)" Style="{StaticResource HeaderButton}"/>
+                <Button Grid.Column="3" Content="✕" Click="CloseClick" ToolTip="Fechar aplicação (Ctrl+Q)" Style="{StaticResource CloseButton}"/>
+            </Grid>
+
+            <!-- 2. HERO: PRODUÇÃO SOLAR -->
+            <Border Grid.Row="1"
+                    Background="{StaticResource HeroBg}"
+                    BorderBrush="#253549"
+                    BorderThickness="1"
+                    CornerRadius="16"
+                    Padding="16"
+                    Margin="0,16,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel>
+                        <TextBlock Text="PRODUÇÃO SOLAR" Foreground="{StaticResource TextMuted}" FontSize="10" FontWeight="SemiBold"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                            <TextBlock x:Name="PvValue" Text="0.00" FontSize="38" FontWeight="Light" Foreground="{StaticResource TextPrimary}"/>
+                            <TextBlock Text=" kW" VerticalAlignment="Bottom" Margin="4,0,0,7" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource SolarGreen}"/>
+                        </StackPanel>
+
+                        <!-- Badges: Demo Mode & Self-Sufficiency -->
+                        <WrapPanel Margin="0,4,0,0">
+                            <Border x:Name="DemoBadge" Background="#332A15" CornerRadius="6" Padding="6,2" Margin="0,0,6,0">
+                                <TextBlock x:Name="DemoLabel" Text="MODO DEMONSTRAÇÃO" Foreground="#F4C66A" FontSize="9" FontWeight="SemiBold"/>
+                            </Border>
+                            <Border x:Name="SufficiencyBadge" Background="#1B352E" CornerRadius="6" Padding="6,2">
+                                <TextBlock x:Name="SufficiencyLabel" Text="☀️ 100% Solar" Foreground="{StaticResource SolarGreen}" FontSize="9" FontWeight="SemiBold"/>
+                            </Border>
+                        </WrapPanel>
+                    </StackPanel>
+
+                    <Border Grid.Column="1" Width="44" Height="44" CornerRadius="12" Background="#1D3830" VerticalAlignment="Center">
+                        <TextBlock Text="⚡" Foreground="{StaticResource SolarGreen}" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- 3. STRINGS: PV1 & PV2 -->
+            <Grid Grid.Row="2" Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Background="{StaticResource CardBg}" BorderBrush="#202F40" BorderThickness="1" CornerRadius="12" Padding="12">
+                    <StackPanel>
+                        <TextBlock Text="String 1 (PV1)" Foreground="{StaticResource TextMuted}" FontSize="9" FontWeight="Medium"/>
+                        <TextBlock x:Name="Pv1Value" Text="0.00 kW" Foreground="{StaticResource TextPrimary}" FontSize="16" FontWeight="SemiBold" Margin="0,3,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" Background="{StaticResource CardBg}" BorderBrush="#202F40" BorderThickness="1" CornerRadius="12" Padding="12">
+                    <StackPanel>
+                        <TextBlock Text="String 2 (PV2)" Foreground="{StaticResource TextMuted}" FontSize="9" FontWeight="Medium"/>
+                        <TextBlock x:Name="Pv2Value" Text="0.00 kW" Foreground="{StaticResource TextPrimary}" FontSize="16" FontWeight="SemiBold" Margin="0,3,0,0"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- 4. METRICS LIST (Casa, Rede, Bateria, Produção Hoje) -->
+            <Border Grid.Row="3" Background="{StaticResource CardBg}" BorderBrush="#202F40" BorderThickness="1" CornerRadius="14" Padding="14,12" Margin="0,10,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Casa / Consumo -->
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="🏠  Casa" Foreground="{StaticResource TextMuted}" FontSize="12"/>
+                    </StackPanel>
+                    <TextBlock x:Name="LoadValue" Grid.Column="1" Text="—" Foreground="{StaticResource TextPrimary}" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+
+                    <Separator Grid.Row="1" Grid.ColumnSpan="2" Background="#1E2A3A" Margin="0,6"/>
+
+                    <!-- Rede Elétrica -->
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="⚡  Rede" Foreground="{StaticResource TextMuted}" FontSize="12"/>
+                    </StackPanel>
+                    <TextBlock x:Name="GridValue" Grid.Row="2" Grid.Column="1" Text="—" Foreground="{StaticResource SolarGreen}" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+
+                    <Separator Grid.Row="3" Grid.ColumnSpan="2" Background="#1E2A3A" Margin="0,6"/>
+
+                    <!-- Bateria & SoC -->
+                    <StackPanel Grid.Row="4" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🔋  Bateria" Foreground="{StaticResource TextMuted}" FontSize="12"/>
+                        </StackPanel>
+                        <TextBlock x:Name="BatteryActivityLabel" Text="Em repouso" Foreground="{StaticResource BatteryCyan}" FontSize="9" Margin="20,2,0,0"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <TextBlock x:Name="SocValue" Text="—" Foreground="{StaticResource TextPrimary}" FontSize="13" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+                    </StackPanel>
+
+                    <!-- Mini SoC Progress Bar -->
+                    <Grid Grid.Row="5" Grid.ColumnSpan="2" Margin="20,4,0,8" SizeChanged="SocBarTrack_SizeChanged">
+                        <Border x:Name="SocBarTrack" Height="4" CornerRadius="2" Background="#263447" HorizontalAlignment="Stretch"/>
+                        <Border x:Name="SocBarFill" Height="4" CornerRadius="2" Background="{StaticResource SolarGreen}" HorizontalAlignment="Left" Width="0"/>
+                    </Grid>
+
+                    <!-- Produção Hoje & Mês -->
+                    <StackPanel Grid.Row="6" VerticalAlignment="Center">
+                        <TextBlock Text="📈  Hoje" Foreground="{StaticResource TextMuted}" FontSize="12"/>
+                        <TextBlock x:Name="MonthValue" Text="Mês: —" Foreground="{StaticResource TextMuted}" FontSize="9" Margin="20,1,0,0"/>
+                    </StackPanel>
+                    <TextBlock x:Name="TodayValue" Grid.Row="6" Grid.Column="1" Text="—" Foreground="{StaticResource TextPrimary}" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+
+            <!-- 5. STATUS BAR & REFRESH -->
+            <Border Grid.Row="4" Background="{StaticResource CardBg}" BorderBrush="#202F40" BorderThickness="1" CornerRadius="12" Padding="12,10" Margin="0,10,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Ellipse x:Name="StatusDot" Width="7" Height="7" Fill="{StaticResource SolarGreen}" Margin="0,0,7,0"/>
+                            <TextBlock x:Name="StatusValue" Text="Inversor online" Foreground="{StaticResource TextPrimary}" FontSize="11" FontWeight="SemiBold"/>
+                        </StackPanel>
+
+                        <TextBlock x:Name="MetaValue" Text="🌡 —   ·   Atualizado agora" Foreground="{StaticResource TextMuted}" FontSize="9" Margin="14,4,0,0"/>
+                        <TextBlock x:Name="ErrorValue" Text="" Foreground="#F87171" FontSize="9" Margin="0,4,0,0" TextWrapping="Wrap" MaxHeight="38"/>
+                    </StackPanel>
+
+                    <Button x:Name="RefreshBtn" Grid.Column="1" Content="↻" Click="RefreshClick" ToolTip="Atualizar agora (F5)" Style="{StaticResource HeaderButton}" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
 </Window>

@@ -1,5 +1,5 @@
 #define MyAppName "FoxESS Monitor"
-#define MyAppVersion "1.1.5"
+#define MyAppVersion "1.2.0"
 #define MyAppExeName "FoxESS Monitor.exe"
 [Setup]
 AppId={{B5A26719-4B76-4D6B-BD0D-D8F17EB3AF5A}
